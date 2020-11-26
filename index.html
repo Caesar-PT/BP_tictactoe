@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        table {
+            border: 1px solid;
+        }
+        td {
+            text-align: center;
+            border: 1px solid;
+            height: 50px;
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<table id="tic"></table>
+<script>
+    const COT = 3;
+    const DONG = 3;
+    let myArr = [];
+    let turn = 1;
+    function showBoard(a, b){
+        let draw ='';
+        for (let i = 0; i < a; i++){
+            myArr[i] = [] ;
+            draw += '<tr>'
+            for (let j = 0; j < b; j++){
+                myArr[i][j] = "*";
+                draw += '<td id="cell-' + i + '-' + j +'" onclick="play('+i+', '+j+')">' + '</td>'
+            }
+            draw += '</tr>'
+        }
+        document.getElementById('tic').innerHTML = draw;
+        console.log(myArr);
+    }
+    function play(x, y){
+        if (turn === 1) {
+            myArr[x][y] = 'X';
+            document.getElementById('cell-' + x + '-' + y).innerHTML = 'X'
+            turn = 2;
+        } else {
+            document.getElementById('cell-' + x + '-' + y).innerHTML = 'O'
+            turn = 1;
+            myArr[x][y] = 'O';
+        }
+        checkWin(x, y);
+    }
+    function checkWin(x, y){
+            let count = 1;
+        //Check ngang ve ben trai o vua danh
+        let i = 1;
+        while (y - i >= 0 && myArr[x][y -i] === myArr[x][y]) {
+            count++;
+            i++;
+        }
+        //check ngang ve ben phai o dang danh
+        let j = 1;
+        while (y + j <= COT && myArr[x][y + j] === myArr[x][y]) {
+            count++;
+            j++;
+        }
+        // Check doc xuong duoi
+        let h = 1;
+        while (x - h >= 0 && myArr[x - h][y] === myArr[x][y]){
+            count++;
+            h++;
+        }
+        let k = 1;
+        while (x + k <= DONG && myArr[x + k][y] === myArr[x][y]){
+            count++;
+            k++;
+        }
+        if (isGameOver(count)){
+            alert("win")
+        }
+    }
+    function isGameOver(number) {
+        return number === 3;
+    }
+    showBoard(COT, DONG);
+</script>
+</body>
+</html>
